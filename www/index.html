@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0e0110">
+<title>Divine Fragrances</title>
+<style>
+html,body{height:100%;margin:0;background:#0e0110;color:#f3d98b;font-family:Georgia,'Times New Roman',serif}
+body{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+img{width:min(58vw,260px);animation:glow 2.4s ease-in-out infinite}
+h1{font-weight:400;letter-spacing:.28em;text-transform:uppercase;font-size:1.05rem;margin:22px 0 6px}
+p{margin:0;color:#b9a56a;font-size:.85rem;letter-spacing:.12em}
+.bar{width:140px;height:2px;margin-top:26px;background:#2a1030;overflow:hidden;border-radius:2px}
+.bar i{display:block;width:40%;height:100%;background:linear-gradient(90deg,transparent,#f3d98b,transparent);animation:slide 1.3s linear infinite}
+button{margin-top:22px;padding:12px 30px;border:1px solid #f3d98b;background:transparent;color:#f3d98b;border-radius:30px;font:inherit;letter-spacing:.1em}
+button:active{background:#f3d98b;color:#0e0110}
+#off{display:none}
+@keyframes glow{50%{filter:drop-shadow(0 0 18px rgba(243,217,139,.55))}}
+@keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(350%)}}
+</style></head><body>
+<img src="logo.png" alt="Divine Fragrances">
+<h1>Divine Fragrances</h1><p>Premium Perfume Oils</p>
+<div class="bar" id="load"><i></i></div>
+<div id="off"><p>You appear to be offline.</p><button onclick="go()">Try again</button></div>
+<script>
+var SITE="https://divinefragrance.co.ke/";
+function go(){
+  document.getElementById("off").style.display="none";
+  document.getElementById("load").style.display="block";
+  var wait=new Promise(function(r){setTimeout(r,1200)});
+  var c=new AbortController(),t=setTimeout(function(){c.abort()},8000);
+  var chk=fetch(SITE,{mode:"no-cors",signal:c.signal,cache:"no-store"}).then(function(){clearTimeout(t);return true},function(){return false});
+  Promise.all([wait,chk]).then(function(v){
+    if(v[1]){location.replace(SITE)}
+    else{document.getElementById("load").style.display="none";document.getElementById("off").style.display="block"}
+  });
+}
+go();
+</script></body></html>
